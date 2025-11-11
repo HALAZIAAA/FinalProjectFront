@@ -224,7 +224,6 @@ const FileConvertPage = () => {
                   <option value="docx">DOCX</option>
                   <option value="doc">DOC</option>
                   <option value="hwp">HWP</option>
-                  <option value="braille">점자</option>
                 </select>
               </div>
 

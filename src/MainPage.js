@@ -17,7 +17,7 @@ const MainPage = () => {
         className="lms-button" 
         onClick={() => handleNavigate('/lms')}
       >
-        LMS 연동하기
+        COSMOS 연동하기
       </button>
 
       {/* 4개의 기능을 담는 그리드 컨테이너 */}
@@ -29,6 +29,13 @@ const MainPage = () => {
         >
           <h2>파일 변환</h2>
           <p>PPT, PDF 파일 내 시각자료를 텍스트로 변환하여 추가해 DOCX, HWP로 변환합니다.</p>
+        </button>
+                <button 
+          className="grid-item button-item" 
+          onClick={() => handleNavigate('/lectures')} // 임시 경로: /lectures
+        >
+          <h2>점자 변환</h2>
+          <p>DOCX, HWP를 점자로 변환합니다.</p>
         </button>
 
         {/* 2. 음성 녹음 (버튼) */}
@@ -48,25 +55,7 @@ const MainPage = () => {
           <h2>강의 자료 목록</h2>
           <p>COSMOS 연동을 통해 강좌 목록을 불러와 자료를 주차별로 정리합니다.</p>
         </button>
-
-        {/* 4. 시스템 통계 (정적 패널) */}
-        <div className="grid-item static-item">
-          <h2>시스템 통계</h2>
-          <ul className="stats-list">
-            <li>
-              <span>현재 변환 중인 파일</span>
-              <span>N개</span>
-            </li>
-            <li>
-              <span>현재 변환 중인 파일</span>
-              <span>N개</span>
-            </li>
-            <li>
-              <span>현재 변환 중인 파일</span>
-              <span>N개</span>
-            </li>
-          </ul>
-        </div>
+        
       </div>
     </div>
   );
