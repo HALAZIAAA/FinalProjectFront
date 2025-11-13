@@ -1,7 +1,10 @@
+// 전달 변수 file
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './FileConvertPage.css'; // 스타일을 위한 CSS 파일
 import { UilCloudUpload, UilFile, UilCheckCircle } from '@iconscout/react-unicons'; // 아이콘 라이브러리
+import axios from 'axios';
+
 
 const FileConvertPage = () => {
   const navigate = useNavigate();
@@ -66,22 +69,20 @@ const FileConvertPage = () => {
   };
 
 
-  const handleConvertClick = () => {
-    if (!selectedFile) return;
+  const handleConvertClick = async () => {
+    if (!selectedFile) {
+      alert('먼저 파일을 업로드해주세요.');
+      return;
+    }
 
     const originalName = selectedFile.name;
     const lastDotIndex = originalName.lastIndexOf('.');
     const baseName = lastDotIndex > -1 ? originalName.substring(0, lastDotIndex) : originalName;
 
-    let newExtension;
-    if (convertFormat === 'braille') {
-      newExtension = 'brf';
-    } else {
-      newExtension = convertFormat;
-    }
+    // FastAPI process_file(file: UploadFile = File(...))와 맞추어 FormData 구성
+    const formData = new FormData();
+    formData.append('file', selectedFile); // ✅ 백엔드 파라미터 이름과 동일
 
-    const newFileName = `${baseName}.${newExtension}`;
-    
     const uploadTime = new Date().toLocaleString('ko-KR', {
       year: 'numeric',
       month: '2-digit',
@@ -89,6 +90,10 @@ const FileConvertPage = () => {
       hour: '2-digit',
       minute: '2-digit',
     });
+
+    // 현재 백엔드는 항상 DOCX를 반환하므로 확장자를 docx로 고정
+    const newExtension = 'docx';
+    const newFileName = `${baseName}.${newExtension}`;
 
     const newJob = {
       id: Date.now(),
@@ -100,33 +105,64 @@ const FileConvertPage = () => {
 
     setConversionJobs(prevJobs => [newJob, ...prevJobs]);
 
-    setTimeout(() => {
-      setConversionJobs(prevJobs => 
-        prevJobs.map(job => 
-          job.id === newJob.id ? { ...job, status: 'completed' } : job
+    try {
+      const response = await axios.post(
+        // ⚠️ prefix를 썼다면 예: 'http://localhost:8000/api/process' 로 수정
+        'http://localhost:8000/process',
+        formData,
+        {
+          responseType: 'blob', // 파일 다운로드를 위해 blob으로 받기
+        }
+      );
+
+      // 응답으로 받은 DOCX 파일을 위한 URL 생성 (클릭 시 다운로드 용)
+      const blob = new Blob(
+        [response.data],
+        {
+          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        }
+      );
+      const url = window.URL.createObjectURL(blob);
+
+      // 상태를 완료로 업데이트 + 다운로드 URL 저장
+      setConversionJobs(prevJobs =>
+        prevJobs.map(job =>
+          job.id === newJob.id ? { ...job, status: 'completed', downloadUrl: url } : job
         )
       );
-    }, 3000);
+    } catch (error) {
+      console.error('파일 변환 중 오류 발생:', error);
+      alert('파일 변환 중 오류가 발생했습니다. 백엔드 서버 상태를 확인해주세요.');
 
-    setSelectedFile(null);
-    fileInputRef.current.value = null; 
+      // 실패 상태 표시
+      setConversionJobs(prevJobs =>
+        prevJobs.map(job =>
+          job.id === newJob.id ? { ...job, status: 'failed' } : job
+        )
+      );
+    } finally {
+      // 선택된 파일 및 input 초기화
+      setSelectedFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = null;
+      }
+    }
   };
 
-  const handleDownloadSimulate = (fileName) => {
-    console.log(`${fileName} 다운로드 시도 (시뮬레이션)`);
+  const handleDownload = (job) => {
+    if (!job.downloadUrl) {
+      alert('아직 다운로드 가능한 파일이 없습니다. 잠시 후 다시 시도해주세요.');
+      return;
+    }
 
-    const fileContent = `이것은 ${fileName} 파일의 시뮬레이션 다운로드입니다. \n실제 파일은 백엔드 연동이 필요합니다.`;
-    const blob = new Blob([fileContent], { type: 'application/octet-stream' });
-    const url = URL.createObjectURL(blob);
-    
     const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
+    a.href = job.downloadUrl;
+    a.download = job.name;
     document.body.appendChild(a);
     a.click();
-    
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // 필요하다면 한 번만 다운로드 가능하게 만들고 싶을 때 사용:
+    // window.URL.revokeObjectURL(job.downloadUrl);
   };
 
   const renderJobItem = (job) => (
@@ -135,8 +171,8 @@ const FileConvertPage = () => {
         {job.status === 'completed' ? (
           <span 
             className="result-file-name completed-link"
-            onClick={() => handleDownloadSimulate(job.name)}
-            title={`${job.name} 다운로드 (시뮬레이션)`}
+            onClick={() => handleDownload(job)}
+            title={`${job.name} 다운로드`}
           >
             {job.name}
           </span>
