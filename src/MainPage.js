@@ -2,6 +2,22 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MainPage.css'; // 스타일을 위한 CSS 파일을 임포트합니다.
 
+const speak = (text) => {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'ko-KR';
+  utter.rate = 1.1;   // 말하기 속도 (기본 1.0, 0.7~1.3 사이 추천)
+  utter.pitch = 0.7;  // 목소리 톤 (0~2, 기본 1.0)
+  utter.volume = 1.2; // 볼륨 (0~1, 기본 1.0)
+  window.speechSynthesis.speak(utter);
+};
+
+const handleButtonTTS = (e) => {
+  const text = e.currentTarget.innerText;
+  speak(text);
+};
+
 const MainPage = () => {
   const navigate = useNavigate();
 
@@ -16,6 +32,8 @@ const MainPage = () => {
       <button 
         className="lms-button" 
         onClick={() => handleNavigate('/lms')}
+        onFocus={handleButtonTTS}
+        onMouseEnter={handleButtonTTS}
       >
         COSMOS 연동하기
       </button>
@@ -26,6 +44,8 @@ const MainPage = () => {
         <button 
           className="grid-item button-item" 
           onClick={() => handleNavigate('/convert')} // 임시 경로: /convert
+          onFocus={handleButtonTTS}
+          onMouseEnter={handleButtonTTS}
         >
           <h2>파일 변환</h2>
           <p>PPT, PDF 파일 내 시각자료를 텍스트로 변환하여 추가해 DOCX, HWP로 변환합니다.</p>
@@ -33,6 +53,8 @@ const MainPage = () => {
                 <button 
           className="grid-item button-item" 
           onClick={() => handleNavigate('/braille')} // 임시 경로: /lectures
+          onFocus={handleButtonTTS}
+          onMouseEnter={handleButtonTTS}
         >
           <h2>점자 변환</h2>
           <p>DOCX, HWP를 점자로 변환합니다.</p>
@@ -42,6 +64,8 @@ const MainPage = () => {
         <button 
           className="grid-item button-item" 
           onClick={() => handleNavigate('/record')} // 임시 경로: /record
+          onFocus={handleButtonTTS}
+          onMouseEnter={handleButtonTTS}
         >
           <h2>음성 녹음</h2>
           <p>실시간으로 음성 녹음을 진행하고 녹음이 완료되면 지시어 처리와 요약이 진행됩니다.</p>
@@ -51,6 +75,8 @@ const MainPage = () => {
         <button 
           className="grid-item button-item" 
           onClick={() => handleNavigate('/lectures')} // 임시 경로: /lectures
+          onFocus={handleButtonTTS}
+          onMouseEnter={handleButtonTTS}
         >
           <h2>강의 자료 목록</h2>
           <p>COSMOS 연동을 통해 강좌 목록을 불러와 자료를 주차별로 정리합니다.</p>
