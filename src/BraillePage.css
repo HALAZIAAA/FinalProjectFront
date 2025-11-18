@@ -1,0 +1,334 @@
+.convert-page {
+  width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 20px 0;
+  font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+}
+
+.convert-container {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.convert-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+/* 상단 네비게이션 */
+.top-nav-buttons {
+  display: flex;
+  margin-bottom: 30px;
+  position: relative;
+  align-items: center;
+}
+
+.nav-button {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 5px;
+  font-size: 25px;
+  font-weight: bold;
+  color: #777;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.nav-button:hover {
+  color: #000;
+}
+
+.nav-button.active {
+  color: #000;
+}
+
+.nav-button::after {
+  content: '/';
+  font-size: 18px;
+  font-weight: 500;
+  color: #ccc;
+  margin: 0 15px;
+}
+
+.nav-button:last-of-type::after {
+  content: '';
+  margin: 0;
+}
+
+/* 페이지 제목 / 설명 */
+.page-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 10px 0 8px 0;
+  color: #333;
+}
+
+.page-description {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* 업로드 카드 영역: FileConvertPage의 upload-panel + file-drop-zone 느낌 */
+.upload-card {
+  background-color: #ffffff;
+  border: 2px solid #e0eafc;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  min-height: 350px;
+  margin-bottom: 40px;
+}
+
+.upload-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #d0e0f0;
+  border-radius: 10px;
+  text-align: center;
+  color: #777;
+  padding: 40px 20px;
+}
+
+.upload-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.upload-icon {
+  width: 60px;
+  height: 60px;
+}
+
+.upload-title {
+  font-size: 25px;
+  font-weight: bold;
+  color: #333;
+  margin: 15px 20px 5px 20px;
+}
+
+.upload-subtitle {
+  font-size: 20px;
+  color: #888;
+  margin-bottom: 25px;
+}
+
+.upload-button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 20px;
+}
+
+.upload-button:hover {
+  background-color: #357abd;
+}
+
+/* 선택된 파일 정보 */
+.selected-file-info {
+  border: 2px solid #e0eafc;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 300px;
+  margin-top: 10px;
+}
+
+.file-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.file-texts {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.file-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-size {
+  font-size: 14px;
+  color: #777;
+}
+
+.convert-start-button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 15px;
+  width: 100%;
+  max-width: 300px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 25px;
+}
+
+.convert-start-button:hover {
+  background-color: #357abd;
+}
+
+.convert-start-button:disabled {
+  background-color: #c0d4f0;
+  cursor: not-allowed;
+}
+
+/* 변환 내역 섹션: FileConvertPage의 result-panel 스타일 참조 */
+.jobs-section {
+  background-color: #f0f8ff;
+  border-radius: 15px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  font-size: 22px;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.empty-jobs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  color: #888;
+  font-size: 16px;
+}
+
+.jobs-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.job-item {
+  border: 1px solid #e0eafc;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #fdfdff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.job-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.job-file-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.job-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.job-filename {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.job-time {
+  font-size: 14px;
+  color: #777;
+}
+
+.job-status-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.job-status {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.job-status.processing {
+  background-color: #fffbe6;
+  color: #f59e0b;
+}
+
+.job-status.completed {
+  background-color: #f0fdf4;
+  color: #10b981;
+}
+
+.job-status.failed {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.status-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.job-filename.completed-link {
+  color: #357abd;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.job-filename.completed-link:hover {
+  color: #4a90e2;
+}
+
+.job-filename {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.job-filename:hover,
+.job-filename:focus-visible {
+  text-decoration: underline;
+  opacity: 0.85;
+}
