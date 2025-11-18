@@ -203,7 +203,9 @@ const FileConvertPage = () => {
     <div className="convert-container">
       {/* 상단 네비게이션 버튼 */}
       <div className="top-nav-buttons">
+        <button className="nav-button" onClick={() => navigate('/')}>홈 화면</button>
         <button className="nav-button active" onClick={() => navigate('/convert')}>파일 변환</button>
+        <button className="nav-button" onClick={() => navigate('/braille')}>점자 변환</button>
         <button className="nav-button" onClick={() => navigate('/record')}>음성 녹음</button>
         <button className="nav-button" onClick={() => navigate('/lectures')}>강의 자료 목록</button>
         <button className="lms-button" onClick={() => navigate('/lms')}>LMS 연동하기</button>

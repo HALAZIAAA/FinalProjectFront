@@ -316,7 +316,7 @@
   margin: 0 15px;
 }
 
-.nav-button:nth-of-type(3)::after {
+.nav-button:last-of-type::after {
   content: '';
   margin: 0;
 }

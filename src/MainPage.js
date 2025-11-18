@@ -32,7 +32,7 @@ const MainPage = () => {
         </button>
                 <button 
           className="grid-item button-item" 
-          onClick={() => handleNavigate('/lectures')} // 임시 경로: /lectures
+          onClick={() => handleNavigate('/braille')} // 임시 경로: /lectures
         >
           <h2>점자 변환</h2>
           <p>DOCX, HWP를 점자로 변환합니다.</p>
